@@ -1,0 +1,713 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | Skyline Hostel</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f2f5fa;
+    color: #263448;
+}
+
+.sidebar {
+    width: 245px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: #142b49;
+    color: white;
+    padding: 25px 16px;
+    overflow-y: auto;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 5px 8px 35px;
+}
+
+.brand span {
+    color: #59c3e6;
+}
+
+.sidebar a {
+    display: block;
+    text-decoration: none;
+    color: #dce7f5;
+    padding: 13px 14px;
+    border-radius: 8px;
+    margin-bottom: 7px;
+    font-size: 15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #24558a;
+    color: white;
+}
+
+.main {
+    margin-left: 245px;
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.topbar h1 {
+    font-size: 27px;
+    color: #172d49;
+}
+
+.topbar p {
+    color: #718096;
+    margin-top: 7px;
+}
+
+.logout {
+    border: none;
+    background: #e74c3c;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.welcome {
+    background: linear-gradient(120deg, #1d568e, #348cc0);
+    color: white;
+    padding: 28px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+}
+
+.welcome h2 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    line-height: 1.7;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.stat {
+    background: white;
+    border-radius: 13px;
+    padding: 22px;
+    box-shadow: 0 3px 14px #182b4210;
+    border: 1px solid #e7edf4;
+}
+
+.stat .icon {
+    font-size: 26px;
+}
+
+.stat h3 {
+    font-size: 15px;
+    color: #718096;
+    margin: 14px 0 9px;
+}
+
+.stat strong {
+    font-size: 23px;
+    color: #173b64;
+}
+
+.section {
+    background: white;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 13px;
+    box-shadow: 0 3px 14px #182b420a;
+    scroll-margin-top: 20px;
+}
+
+.section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #173b64;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.detail {
+    padding: 15px;
+    background: #f5f8fc;
+    border-radius: 9px;
+}
+
+.detail small {
+    color: #718096;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.detail strong {
+    color: #253c56;
+}
+
+.status {
+    color: #198754;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 13px 10px;
+    border-bottom: 1px solid #e7edf4;
+}
+
+th {
+    background: #f3f7fb;
+    color: #304b68;
+}
+
+.notice {
+    background: #f1f7ff;
+    border-left: 4px solid #3182ce;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    line-height: 1.6;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin: 14px 0 7px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.submit {
+    background: #1769aa;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+#complaintMessage {
+    margin-top: 12px;
+    color: #198754;
+}
+
+footer {
+    text-align: center;
+    color: #718096;
+    padding: 15px;
+}
+
+@media (max-width: 850px) {
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+        padding: 20px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+
+    .brand {
+        margin-bottom: 18px;
+    }
+
+    .sidebar nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .details {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar h1 {
+        font-size: 23px;
+    }
+
+    .section {
+        padding: 16px;
+        overflow-x: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="brand">🏨 Skyline<span> Hostel</span></div>
+
+    <nav>
+        <a class="active" href="#home">🏠 Dashboard</a>
+        <a href="#profile">👤 My Profile</a>
+        <a href="#room">🛏️ My Room</a>
+        <a href="#fees">💳 Fee Details</a>
+        <a href="#mess">🍽️ Mess Menu</a>
+        <a href="#amenities">✨ Amenities</a>
+        <a href="#visitors">👥 Visitor Rules</a>
+        <a href="#notices">📢 Notices</a>
+        <a href="#complaints">📝 Complaints</a>
+    </nav>
+</aside>
+
+<main class="main">
+
+    <header class="topbar" id="home">
+        <div>
+            <h1>Student Dashboard</h1>
+            <p>Manage your hostel information in one place.</p>
+        </div>
+
+        <button class="logout" onclick="logout()">Logout ↗</button>
+    </header>
+
+    <section class="welcome">
+        <h2>Welcome, <span id="studentName">Student</span>! 👋</h2>
+        <p>
+            Welcome to Skyline Student Hostel.<br>
+            View your room, fee information, hostel notices
+            and submit complaints from your dashboard.
+        </p>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <div class="icon">🛏️</div>
+            <h3>Room Number</h3>
+            <strong id="roomNumber">A-101</strong>
+        </div>
+
+        <div class="stat">
+            <div class="icon">💳</div>
+            <h3>Fee Status</h3>
+            <strong>Pending</strong>
+        </div>
+
+        <div class="stat">
+            <div class="icon">📢</div>
+            <h3>Hostel Notices</h3>
+            <strong>2 Updates</strong>
+        </div>
+    </section>
+
+    <section class="section" id="profile">
+        <h2>👤 My Profile</h2>
+
+        <div class="details">
+            <div class="detail">
+                <small>Student Name</small>
+                <strong id="profileName">Demo Student</strong>
+            </div>
+
+            <div class="detail">
+                <small>Roll Number</small>
+                <strong id="profileRoll">STU101</strong>
+            </div>
+
+            <div class="detail">
+                <small>Hostel Name</small>
+                <strong>Skyline Student Hostel</strong>
+            </div>
+
+            <div class="detail">
+                <small>Student Status</small>
+                <strong class="status">Active</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="room">
+        <h2>🛏️ My Room Details</h2>
+
+        <div class="details">
+            <div class="detail">
+                <small>Room Number</small>
+                <strong>A-101</strong>
+            </div>
+
+            <div class="detail">
+                <small>Room Type</small>
+                <strong>Shared Room</strong>
+            </div>
+
+            <div class="detail">
+                <small>Bed Number</small>
+                <strong>Bed 1</strong>
+            </div>
+
+            <div class="detail">
+                <small>Room Status</small>
+                <strong class="status">Allocated</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="fees">
+        <h2>💳 Fee Details</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Hostel Fee</td>
+                    <td>₹5,000</td>
+                    <td style="color:#c05621">Pending</td>
+                </tr>
+
+                <tr>
+                    <td>Mess Fee</td>
+                    <td>₹2,000</td>
+                    <td style="color:#c05621">Pending</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top:15px;color:#718096">
+            Note: These are sample amounts for demonstration.
+            Please contact the hostel office for actual payment details.
+        </p>
+    </section>
+
+    <section class="section" id="mess">
+        <h2>🍽️ Mess Menu</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Dinner</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Monday</td>
+                    <td>Idli</td>
+                    <td>Rice & Dal</td>
+                    <td>Chapati & Curry</td>
+                </tr>
+
+                <tr>
+                    <td>Tuesday</td>
+                    <td>Dosa</td>
+                    <td>Rice & Sambar</td>
+                    <td>Vegetable Pulao</td>
+                </tr>
+
+                <tr>
+                    <td>Wednesday</td>
+                    <td>Upma</td>
+                    <td>Rice & Curry</td>
+                    <td>Chapati & Dal</td>
+                </tr>
+
+                <tr>
+                    <td>Thursday</td>
+                    <td>Poha</td>
+                    <td>Rice & Sambar</td>
+                    <td>Rice & Curry</td>
+                </tr>
+
+                <tr>
+                    <td>Friday</td>
+                    <td>Idli</td>
+                    <td>Rice & Dal</td>
+                    <td>Dosa & Chutney</td>
+                </tr>
+
+                <tr>
+                    <td>Saturday</td>
+                    <td>Poori</td>
+                    <td>Rice & Curry</td>
+                    <td>Chapati & Dal</td>
+                </tr>
+
+                <tr>
+                    <td>Sunday</td>
+                    <td>Paratha</td>
+                    <td>Special Meals</td>
+                    <td>Fried Rice</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section" id="amenities">
+        <h2>✨ Hostel Amenities</h2>
+
+        <div class="details">
+            <div class="detail">📶 Wi-Fi Internet</div>
+            <div class="detail">🚰 Drinking Water</div>
+            <div class="detail">🧺 Laundry Facilities</div>
+            <div class="detail">📚 Study Area</div>
+            <div class="detail">🔒 Security</div>
+            <div class="detail">⚡ Power Backup</div>
+        </div>
+    </section>
+
+    <section class="section" id="visitors">
+        <h2>👥 Visitor Rules</h2>
+
+        <div class="notice">
+            Visitors must register at the hostel reception.
+        </div>
+
+        <div class="notice">
+            Visitors must follow hostel visiting hours and security rules.
+        </div>
+
+        <div class="notice">
+            Overnight visitors require permission from hostel management.
+        </div>
+    </section>
+
+    <section class="section" id="notices">
+        <h2>📢 Hostel Notices</h2>
+
+        <div class="notice">
+            <strong>Hostel Cleanliness</strong><br>
+            Keep your room and common areas clean.
+        </div>
+
+        <div class="notice">
+            <strong>Hostel Timings</strong><br>
+            Students must follow the hostel's prescribed entry timings.
+        </div>
+    </section>
+
+    <section class="section" id="complaints">
+        <h2>📝 Submit a Complaint</h2>
+
+        <form id="complaintForm">
+            <label for="category">Complaint Category</label>
+
+            <select id="category" required>
+                <option value="">Select category</option>
+                <option>Room Maintenance</option>
+                <option>Water Problem</option>
+                <option>Electricity Problem</option>
+                <option>Mess / Food</option>
+                <option>Wi-Fi Problem</option>
+                <option>Other</option>
+            </select>
+
+            <label for="description">Complaint Description</label>
+
+            <textarea id="description"
+                placeholder="Describe your problem..."
+                required></textarea>
+
+            <button class="submit" type="submit">
+                Submit Complaint
+            </button>
+
+            <p id="complaintMessage" role="status"></p>
+        </form>
+
+        <h3 style="margin-top:25px;margin-bottom:12px">
+            My Submitted Complaints
+        </h3>
+
+        <div id="complaintList">
+            <p style="color:#718096">No complaints submitted yet.</p>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 Skyline Student Hostel Management System
+    </footer>
+
+</main>
+
+<script>
+    // Load the current student saved by login.html
+    let currentUser = null;
+
+    try {
+        currentUser = JSON.parse(
+            localStorage.getItem("hmsCurrentUser") || "null"
+        );
+    } catch (error) {
+        currentUser = null;
+    }
+
+    // Show demo details if dashboard is opened directly
+    const studentName = currentUser?.name || "Demo Student";
+    const studentRoll = currentUser?.roll || "STU101";
+
+    document.getElementById("studentName").textContent = studentName;
+    document.getElementById("profileName").textContent = studentName;
+    document.getElementById("profileRoll").textContent = studentRoll;
+
+    // Use complaints belonging to this student
+    const complaintKey = "hmsComplaints_" + studentRoll;
+
+    function renderComplaints() {
+        let complaints = [];
+
+        try {
+            complaints = JSON.parse(
+                localStorage.getItem(complaintKey) || "[]"
+            );
+        } catch (error) {
+            complaints = [];
+        }
+
+        const list = document.getElementById("complaintList");
+        list.replaceChildren();
+
+        if (complaints.length === 0) {
+            const empty = document.createElement("p");
+            empty.style.color = "#718096";
+            empty.textContent = "No complaints submitted yet.";
+            list.appendChild(empty);
+            return;
+        }
+
+        complaints.slice().reverse().forEach(function(item) {
+            const card = document.createElement("div");
+            card.className = "notice";
+
+            const title = document.createElement("strong");
+            title.textContent = item.category;
+
+            const details = document.createElement("p");
+            details.textContent = item.description;
+            details.style.marginTop = "8px";
+
+            const date = document.createElement("small");
+            date.textContent = "Submitted: " + item.date;
+
+            card.append(title, details, date);
+            list.appendChild(card);
+        });
+    }
+
+    document.getElementById("complaintForm").addEventListener(
+        "submit",
+        function(event) {
+            event.preventDefault();
+
+            const category = document.getElementById("category").value;
+            const description =
+                document.getElementById("description").value.trim();
+
+            if (!category || !description) {
+                return;
+            }
+
+            let complaints = [];
+
+            try {
+                complaints = JSON.parse(
+                    localStorage.getItem(complaintKey) || "[]"
+                );
+            } catch (error) {
+                complaints = [];
+            }
+
+            complaints.push({
+                category: category,
+                description: description,
+                date: new Date().toLocaleString()
+            });
+
+            localStorage.setItem(
+                complaintKey,
+                JSON.stringify(complaints)
+            );
+
+            document.getElementById("complaintMessage").textContent =
+                "Complaint saved successfully!";
+
+            document.getElementById("complaintForm").reset();
+            renderComplaints();
+        }
+    );
+
+    function logout() {
+        localStorage.removeItem("hmsCurrentUser");
+        window.location.href = "login.html";
+    }
+
+    renderComplaints();
+</script>
+
+</body>
+</html>
+```

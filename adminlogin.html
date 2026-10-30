@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title>
+<style>
+body{font-family:Arial;background:#f4f6f9;margin:0}
+header{background:#003366;color:white;text-align:center;padding:20px}
+.login-box{max-width:400px;margin:40px auto;background:white;padding:25px;border-radius:10px;box-shadow:0 0 10px #bbb}
+input{width:100%;padding:12px;margin:8px 0 16px;box-sizing:border-box;border:1px solid #ccc;border-radius:5px}
+button{width:100%;padding:12px;background:#0059b3;color:white;border:0;border-radius:5px;cursor:pointer}
+a{color:#0059b3}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🏠 Skyline Student Hostel</h1>
+<h2>Admin Login</h2>
+</header>
+
+<div class="login-box">
+<form id="adminForm">
+<label>Admin Username</label>
+<input type="text" id="username" required>
+
+<label>Admin Password</label>
+<input type="password" id="password" required>
+
+<button type="submit">Login as Admin</button>
+<p id="msg"></p>
+</form>
+
+<p><a href="index.html">Back to Home</a></p>
+</div>
+
+<script>
+document.getElementById("adminForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    if(username === "admin" && password === "admin123"){
+        localStorage.setItem("adminLoggedIn", "true");
+        window.location.href = "admin-dashboard.html";
+    } else {
+        document.getElementById("msg").style.color = "red";
+        document.getElementById("msg").textContent =
+            "Invalid admin username or password.";
+    }
+});
+</script>
+</body>
+</html>

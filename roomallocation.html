@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Room Allocation</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+width:80%;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#0059b3;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#003366;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th{
+background:#0059b3;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Room Allocation</h2>
+
+<label>Student Name</label>
+<input type="text" id="name">
+
+<label>Room Type</label>
+<select id="type">
+<option>Single Sharing - ₹5000</option>
+<option>Double Sharing - ₹3500</option>
+<option>Triple Sharing - ₹2500</option>
+</select>
+
+<label>Room Number</label>
+<select id="room">
+<option>A101</option>
+<option>A102</option>
+<option>B201</option>
+<option>B202</option>
+<option>C301</option>
+<option>C302</option>
+</select>
+
+<label>Check In Date</label>
+<input type="date" id="date">
+
+<button onclick="allocateRoom()">
+Allocate Room
+</button>
+
+<table>
+
+<tr>
+<th>Student</th>
+<th>Room Type</th>
+<th>Room No</th>
+<th>Rent</th>
+<th>Date</th>
+</tr>
+
+<tbody id="roomTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+function allocateRoom(){
+
+let name=document.getElementById("name").value;
+let type=document.getElementById("type").value;
+let room=document.getElementById("room").value;
+let date=document.getElementById("date").value;
+
+document.getElementById("roomTable").innerHTML +=
+`
+<tr>
+<td>${name}</td>
+<td>${type}</td>
+<td>${room}</td>
+<td>${type.split('₹')[1]}</td>
+<td>${date}</td>
+</tr>
+`;
+
+}
+
+</script>
+
+</body>
+</html>

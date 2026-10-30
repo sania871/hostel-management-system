@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fee Management</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+width:80%;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#0059b3;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#003366;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th{
+background:#0059b3;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>💰 Fee Management</h2>
+
+<label>Student Name</label>
+<input type="text" id="name">
+
+<label>Total Fee</label>
+<input type="number" id="total">
+
+<label>Paid Amount</label>
+<input type="number" id="paid">
+
+<label>Payment Date</label>
+<input type="date" id="date">
+
+<button onclick="addFee()">
+Save Fee Record
+</button>
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Total Fee</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+
+<tbody id="feeTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+function addFee(){
+
+let name=document.getElementById("name").value;
+let total=parseInt(document.getElementById("total").value);
+let paid=parseInt(document.getElementById("paid").value);
+let date=document.getElementById("date").value;
+
+let due=total-paid;
+
+let status;
+
+if(due<=0){
+status="Paid";
+}
+else{
+status="Pending";
+}
+
+document.getElementById("feeTable").innerHTML +=
+`
+<tr>
+<td>${name}</td>
+<td>₹${total}</td>
+<td>₹${paid}</td>
+<td>₹${due}</td>
+<td>${date}</td>
+<td>${status}</td>
+</tr>
+`;
+
+}
+
+</script>
+
+</body>
+</html>

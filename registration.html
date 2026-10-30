@@ -1,0 +1,235 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration - Skyline Hostel</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #172554, #3b82f6);
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px #0003;
+}
+
+h1 {
+    text-align: center;
+    color: #172554;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin: 14px 0 7px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+#message {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #64748b;
+}
+
+a {
+    color: #2563eb;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Skyline Hostel</h1>
+    <p class="subtitle">Create Your Student Account</p>
+
+    <form id="registrationForm">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" required>
+
+        <label for="username">Create Username / Roll Number</label>
+        <input type="text" id="username" required>
+
+        <label for="course">Course</label>
+        <input type="text" id="course" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" required>
+
+        <label for="password">Create Password</label>
+        <input type="password" id="password"
+               minlength="4" required>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword"
+               minlength="4" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p id="message" role="status"></p>
+
+    <div class="footer">
+        Already registered?
+        <a href="login.html">Login here</a>
+    </div>
+</div>
+
+<script>
+const STUDENTS_KEY = "hmsStudents";
+
+function getStudents() {
+    try {
+        const saved = localStorage.getItem(STUDENTS_KEY);
+        const students = saved ? JSON.parse(saved) : [];
+        return Array.isArray(students) ? students : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+document.getElementById("registrationForm").addEventListener(
+    "submit",
+    function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const course = document.getElementById("course").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+            document.getElementById("confirmPassword").value;
+        const message = document.getElementById("message");
+
+        message.style.color = "red";
+
+        if (!name || !username || !course || !phone || !password) {
+            message.textContent = "Please fill in every field.";
+            return;
+        }
+
+        if (password.length < 4) {
+            message.textContent =
+                "Password must contain at least 4 characters.";
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            message.textContent = "Passwords do not match.";
+            return;
+        }
+
+        const students = getStudents();
+
+        const alreadyExists = students.some(function(student) {
+            const savedUsername =
+                String(student.username || student.roll || "").trim();
+
+            return savedUsername.toLowerCase() === username.toLowerCase();
+        });
+
+        if (alreadyExists) {
+            message.textContent =
+                "This username is already registered. Please choose another.";
+            return;
+        }
+
+        const newStudent = {
+            id: Date.now(),
+            name: name,
+            username: username,
+            roll: username,
+            course: course,
+            phone: phone,
+            password: password
+        };
+
+        students.push(newStudent);
+
+        try {
+            localStorage.setItem(STUDENTS_KEY, JSON.stringify(students));
+
+            const savedStudents = getStudents();
+            const savedSuccessfully = savedStudents.some(function(student) {
+                return String(student.username).toLowerCase() ===
+                    username.toLowerCase();
+            });
+
+            if (!savedSuccessfully) {
+                message.textContent = "Could not save account. Try again.";
+                return;
+            }
+
+            message.style.color = "green";
+            message.textContent =
+                "Registration successful! Redirecting to login...";
+
+            document.getElementById("registrationForm").reset();
+
+            setTimeout(function() {
+                window.location.href = "login.html";
+            }, 1000);
+
+        } catch (error) {
+            message.textContent =
+                "Browser storage is unavailable. Please enable it.";
+        }
+    }
+);
+</script>
+</body>
+</html>
+```

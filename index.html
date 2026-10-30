@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyline Student Hostel Management System</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+header{
+background:linear-gradient(135deg,#003366,#0059b3);
+color:white;
+text-align:center;
+padding:40px;
+}
+
+header h1{
+font-size:40px;
+animation:glow 3s infinite;
+}
+
+header p{
+margin-top:10px;
+font-size:18px;
+}
+
+.hero{
+background:white;
+padding:40px;
+text-align:center;
+animation:fadeIn 1.5s ease;
+}
+
+.hero h2{
+color:#003366;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#666;
+font-size:16px;
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+padding:40px;
+width:90%;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+text-align:center;
+box-shadow:0px 0px 15px rgba(0,0,0,0.15);
+transition:0.4s;
+animation:fadeIn 1s ease;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.05);
+box-shadow:0px 15px 30px rgba(0,0,0,0.25);
+}
+
+.card h3{
+color:#003366;
+margin-bottom:10px;
+}
+
+.card p{
+color:#666;
+margin-bottom:15px;
+}
+
+.btn{
+display:inline-block;
+padding:10px 20px;
+background:#0059b3;
+color:white;
+text-decoration:none;
+border-radius:6px;
+transition:0.3s;
+}
+
+.btn:hover{
+background:#003366;
+transform:scale(1.1);
+}
+
+footer{
+background:#003366;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:20px;
+}
+
+@keyframes glow{
+
+0%{
+text-shadow:0 0 5px white;
+}
+
+50%{
+text-shadow:0 0 20px #66b3ff;
+}
+
+100%{
+text-shadow:0 0 5px white;
+}
+
+}
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>Skyline Student Hostel Management System</h1>
+
+<p>An Integrated Hostel Management Solution</p>
+
+</header>
+
+<div class="hero">
+
+<h2>Welcome To Skyline Student Hostel</h2>
+
+<p>
+Manage student registration, room allocation,
+fee records and complaints efficiently through one system.
+</p>
+
+</div>
+
+<div class="menu">
+
+<div class="card">
+<h3>Student Registration</h3>
+<p>Register new hostel students.</p>
+<a href="registration.html" class="btn">Access Module</a>
+</div>
+
+<div class="card">
+<h3>Room Allocation</h3>
+<p>Assign rooms and accommodation details.</p>
+<a href="roomallocation.html" class="btn">Access Module</a>
+</div>
+
+<div class="card">
+<h3>Fee Management</h3>
+<p>Manage hostel payments and status.</p>
+<a href="fee.html" class="btn">Access Module</a>
+</div>
+
+<div class="card">
+<h3>Complaint Management</h3>
+<p>Handle maintenance and student issues.</p>
+<a href="complaint.html" class="btn">Access Module</a>
+</div>
+
+<div class="card">
+<h3>Admin Login</h3>
+<p>Administrator access panel.</p>
+<a href="adminlogin.html" class="btn">Access Module</a>
+</div>
+
+<div class="card">
+<h3>Student Login</h3>
+<p>Student account login portal.</p>
+<a href="login.html" class="btn">Access Module</a>
+</div>
+
+</div>
+
+<footer>
+
+<p>© 2026 Skyline Student Hostel Management System</p>
+
+</footer>
+
+</body>
+</html>

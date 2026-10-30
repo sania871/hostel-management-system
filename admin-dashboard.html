@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyline Hostel - Admin Dashboard</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f0f2f5;color:#243247}
+.topbar{height:60px;background:#0967a9;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.topbar h2{font-size:21px;margin:0}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+.sidebar{width:190px;background:#172b3a;color:white;padding:15px 10px;flex-shrink:0}
+.sidebar a{display:block;color:white;text-decoration:none;padding:13px 12px;border-radius:6px;margin-bottom:5px}
+.sidebar a:hover,.sidebar a.active{background:#28516b}
+.main{padding:25px;width:100%;min-width:0}
+h1{margin-top:0;font-size:26px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:16px}
+.card,.panel{background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px #00000008}
+.card h3{font-size:15px;color:#65758b;margin:0 0 15px}
+.number{font-size:29px;font-weight:bold;color:#0967a9}
+.green{color:#18843b}.red{color:#d93645}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.panel h2{font-size:19px;margin-top:0}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:11px 8px;border-bottom:1px solid #e7ebf0;font-size:14px}
+th{color:#63738a}
+.action{display:inline-block;background:#0967a9;color:white;padding:10px 14px;border:0;border-radius:5px;text-decoration:none;cursor:pointer;margin:4px 4px 4px 0}
+.muted{color:#7a8796;font-size:14px}
+#notice{color:#18843b;margin-top:10px}
+@media(max-width:850px){
+ .cards{grid-template-columns:repeat(2,minmax(120px,1fr))}
+ .columns{grid-template-columns:1fr}
+ .sidebar{width:145px}
+ .main{padding:15px}
+}
+@media(max-width:520px){
+ .layout{display:block}
+ .sidebar{width:100%;display:flex;overflow-x:auto;gap:4px}
+ .sidebar a{white-space:nowrap}
+ .cards{grid-template-columns:1fr 1fr}
+ .topbar{padding:0 12px}
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+    <h2>🏠 Skyline Hostel Admin</h2>
+    <button class="action" onclick="logout()">Sign Out</button>
+</header>
+
+<div class="layout">
+    <aside class="sidebar">
+        <a href="admin-dashboard.html" class="active">▦ Dashboard</a>
+        <a href="roomallocation.html">🛏 Rooms</a>
+        <a href="#students">👥 Students</a>
+        <a href="fee.html">₹ Payments</a>
+        <a href="notices.html">📢 Notices</a>
+        <a href="complaint.html">🎫 Complaints</a>
+        <a href="#reports">📊 Reports</a>
+        <a href="index.html">🏠 Home</a>
+    </aside>
+
+    <main class="main">
+        <h1>Admin Dashboard</h1>
+        <p class="muted">Hostel overview and management</p>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Total Students Registered</h3>
+                <div class="number" id="studentCount">0</div>
+            </div>
+            <div class="card">
+                <h3>Rooms (demo total)</h3>
+                <div class="number">200</div>
+            </div>
+            <div class="card">
+                <h3>Occupied Rooms (demo)</h3>
+                <div class="number green">150</div>
+            </div>
+            <div class="card">
+                <h3>Vacant Rooms (demo)</h3>
+                <div class="number red">50</div>
+            </div>
+        </section>
+
+        <section class="columns">
+            <div class="panel" id="students">
+                <h2>Registered Students</h2>
+                <p class="muted">Student details saved in this browser</p>
+                <div style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Roll Number</th>
+                                <th>Course</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTable"></tbody>
+                    </table>
+                </div>
+                <p id="emptyMessage" class="muted"></p>
+            </div>
+
+            <div class="panel">
+                <h2>Quick Actions</h2>
+                <a class="action" href="roomallocation.html">Room Allocation</a>
+                <a class="action" href="fee.html">Manage Fees</a>
+                <a class="action" href="notices.html">Publish Notices</a>
+                <a class="action" href="complaint.html">View Complaints</a>
+                <p id="notice"></p>
+            </div>
+
+            <div class="panel" id="reports">
+                <h2>Reports</h2>
+                <p>Total registered students: <strong id="reportCount">0</strong></p>
+                <button class="action" onclick="downloadReport()">Download Student CSV</button>
+            </div>
+
+            <div class="panel">
+                <h2>Hostel Information</h2>
+                <p>Hostel: Skyline Student Hostel</p>
+                <p>Portal: Administration</p>
+                <p class="muted">Room figures shown above are sample values. Connect a database to calculate actual occupancy and payments.</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+function getStudents(){
+    try{
+        const data=JSON.parse(localStorage.getItem("hmsStudents")||"[]");
+        return Array.isArray(data)?data:[];
+    }catch(error){
+        return [];
+    }
+}
+
+function displayStudents(){
+    const students=getStudents();
+    document.getElementById("studentCount").textContent=students.length;
+    document.getElementById("reportCount").textContent=students.length;
+
+    const tbody=document.getElementById("studentTable");
+    tbody.replaceChildren();
+
+    document.getElementById("emptyMessage").textContent=
+        students.length===0
+        ? "No students found. Register a student using the same browser and website."
+        : "";
+
+    students.forEach(function(student){
+        const tr=document.createElement("tr");
+
+        [student.name||"",student.roll||"",student.course||""].forEach(function(value){
+            const td=document.createElement("td");
+            td.textContent=value;
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+}
+
+function downloadReport(){
+    const students=getStudents();
+    const rows=[["Name","Roll Number","Course","Phone"]];
+
+    students.forEach(function(s){
+        rows.push([s.name||"",s.roll||"",s.course||"",s.phone||""]);
+    });
+
+    const csv=rows.map(function(row){
+        return row.map(function(value){
+            return '"' + String(value).replace(/"/g,'""') + '"';
+        }).join(",");
+    }).join("\r\n");
+
+    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="skyline-student-report.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function logout(){
+    try{
+        if(window.DB && typeof window.DB.logout==="function"){
+            window.DB.logout();
+        }
+    }catch(error){}
+
+    localStorage.removeItem("hmsCurrentUser");
+    window.location.href="adminlogin.html";
+}
+
+displayStudents();
+</script>
+</body>
+</html>

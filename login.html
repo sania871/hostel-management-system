@@ -1,0 +1,192 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login - Skyline Hostel</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #172554, #3b82f6);
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 32px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px #0003;
+}
+
+h1 {
+    text-align: center;
+    color: #172554;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin: 16px 0 7px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 22px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+#error {
+    color: #dc2626;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #64748b;
+}
+
+a {
+    color: #2563eb;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Skyline Hostel</h1>
+    <p class="subtitle">Student Login Portal</p>
+
+    <form id="loginForm">
+        <label for="username">Username / Roll Number</label>
+        <input type="text" id="username"
+               autocomplete="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password"
+               autocomplete="current-password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="error" role="alert"></p>
+
+    <div class="footer">
+        New student?
+        <a href="registration.html">Register here</a>
+    </div>
+</div>
+
+<script>
+const STUDENTS_KEY = "hmsStudents";
+const CURRENT_USER_KEY = "hmsCurrentUser";
+
+document.getElementById("loginForm").addEventListener(
+    "submit",
+    function(event) {
+        event.preventDefault();
+
+        const username =
+            document.getElementById("username").value.trim();
+        const password =
+            document.getElementById("password").value;
+        const error = document.getElementById("error");
+
+        error.style.color = "red";
+        error.textContent = "";
+
+        let students;
+
+        try {
+            const saved = localStorage.getItem(STUDENTS_KEY);
+            students = saved ? JSON.parse(saved) : [];
+
+            if (!Array.isArray(students)) {
+                students = [];
+            }
+        } catch (e) {
+            error.textContent =
+                "Unable to read registered accounts. Please try again.";
+            return;
+        }
+
+        const student = students.find(function(item) {
+            const savedUsername =
+                String(item.username || item.roll || "").trim();
+
+            return savedUsername.toLowerCase() === username.toLowerCase()
+                && String(item.password || "") === password;
+        });
+
+        if (!student) {
+            error.textContent =
+                "Account not found. Register using this browser first, then try again.";
+            return;
+        }
+
+        const currentUser = {
+            id: student.id || "",
+            name: student.name || "Student",
+            username: student.username || student.roll || username,
+            roll: student.roll || student.username || username,
+            course: student.course || "",
+            phone: student.phone || "",
+            role: "student"
+        };
+
+        try {
+            localStorage.setItem(
+                CURRENT_USER_KEY,
+                JSON.stringify(currentUser)
+            );
+
+            window.location.href = "student-dashboard.html";
+        } catch (e) {
+            error.textContent =
+                "Unable to save login session. Enable browser storage.";
+        }
+    }
+);
+</script>
+</body>
+</html>
+```
